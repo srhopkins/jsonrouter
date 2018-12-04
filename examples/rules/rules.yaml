@@ -1,0 +1,19 @@
+rules:
+- name: any-event
+  routers:
+  - name: slack
+    channel: ops
+  vars:
+  - name: type
+    jsonpath: $..Type
+    includes: ['.*']
+    excludes:
+  - name: subject
+    jsonpath: $..Subject
+    includes:
+    - '.*'
+    excludes:
+    - '^$'
+  template: |
+    This {type} just came in
+    Subject: {subject}
