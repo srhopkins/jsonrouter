@@ -121,14 +121,14 @@ from jsonrouter import JsonMatchEngine, Rule, jsonify_message
 from routers.slack import Slack
 
 
-with open('rules/rules.yaml', 'r') as f:
+with open('examples/rules/rules.yaml', 'r') as f:
     configs = yaml.safe_load(f)
 
 registered_routers = {
     'slack': Slack(webhook='1234567890').handler
 }
 
-eng = SnsMatchEngine(configs, registered_routers)
+eng = JsonMatchEngine(configs, registered_routers)
 
 
 def handler(event, context):
