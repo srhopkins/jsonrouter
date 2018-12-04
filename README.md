@@ -66,7 +66,7 @@ rules:
 
 Use `(?P<variable_name>)` to capture patterns within the matched field.
 
-> This overrides the `vars:name` you set in the yaml and instead merges the matched name(s) declared in the regex pattern into the message format.
+> This will override any naming collisions with `vars:name` you set in the yaml. It merges the rule vars with matched name(s) declared in the regex where named regex take precedence
 
 ```yaml
 rules:
