@@ -117,7 +117,7 @@ import json
 import yaml
 
 
-from jsonrouter import JsonMatchEngine, Rule, jsonify_message
+from jsonrouter import JsonMatchEngine, jsonify_message
 from routers.slack import Slack
 
 
