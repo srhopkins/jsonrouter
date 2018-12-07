@@ -248,7 +248,8 @@ class JsonMatchEngine(object):
                         'name': rule.name,
                         'routers': rule.routers,
                         'vars': vrs,
-                        'template': rule.template
+                        'template': rule.template,
+                        'record': rec
                     })
         return r
 
