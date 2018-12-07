@@ -23,7 +23,7 @@ VERSION = None
 # What packages are required for this module to be executed?
 REQUIRED = [
     'pyyaml', 
-    'jsonpath'
+    'jsonpath-rw>=1.4.0'
 ]
 
 # What packages are optional?
