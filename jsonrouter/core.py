@@ -75,14 +75,13 @@ class Rule(RuleProperties):
         validate_keys({
             'name',
             'routers',
-            'vars',
-            'template'
+            'vars'
         }, data.keys())
 
         self.__data = data
 
         self.name = data['name']
-        self.template = data['template']
+        self.template = data.get('template') if data.get('template') else ''
 
         self.vars = [Variable(var) for var in data['vars']]
 
@@ -172,9 +171,7 @@ class Variable(VariableProperties):
             # Make sure we have required fields and nothing extra
             validate_keys({
                 'name',
-                'jsonpath',
-                'includes',
-                'excludes'
+                'jsonpath'
             }, variable.keys())
 
             self.jsonpath = variable['jsonpath']

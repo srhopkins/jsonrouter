@@ -3,9 +3,42 @@
 
 Uses simple `yaml` based rules to take action on `JSON` events. Uses [jsonpath](https://readthedocs.org/projects/jsonpath-rw/) to scan the event message and `regex` for `includes` and `excludes` conditionals.
 
+## Rule Config
+
+Anatomy of the config.
+
+```yaml
+# `rules` is the root of the config
+# note: rules can have same name!
+rules: # required
+- name: notification # required
+  routers: # required
+  - name: slack # required
+    # all fields besides name are optional but may be required in the router
+    channel: my-channel # optional
+  vars: # required
+  - name: type # required
+    jsonpath: $..Type # required, except for constants: see bellow 
+    includes: ['.*'] # optional, default `['.*']` includes all
+    excludes: [] # option, dault `[]` excludes nothing
+  # `message` is optional
+  message: | 
+    This {type} just came in
+```
+
+### Constants
+
+You can define a constant var by providing `value` field only
+
+```yaml
+  vars:
+  - name: my-constant
+    value: my constant value
+```
+
 ## Basic Usage
 
-Simplest capture. 
+Simple capture examples. 
 
 ```yaml
 rules:
@@ -22,16 +55,6 @@ rules:
     excludes: ['^$']
   message: |
     This {type} just came in
-```
-
-### Constants
-
-You can define a constant var by providing `value` field only
-
-```yaml
-  vars:
-  - name: my-constant
-    value: my constant value
 ```
 
 ## Advanced Regex

@@ -7,7 +7,7 @@ RUN yum install -y \
 WORKDIR /data
 
 RUN echo -e '\
-  #!/bin/bash
+  #!/bin/bash\n\
   cp -a /src/* /data\n\
   pip3 install --requirement requirements.txt --upgrade --target .\n\
   zip -r packaged.zip . && cp packaged.zip /src\n\
