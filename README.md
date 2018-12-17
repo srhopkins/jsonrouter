@@ -175,3 +175,11 @@ with open('examples/data/sample.json', 'r') as f:
 handler(sample, _)
 ```
 
+## Development
+
+```
+# local tests run from root of project
+python3 -m pytest -v
+# to see print output use `-s`
+python3 -m pytest -v -s
+```
