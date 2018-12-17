@@ -6,12 +6,12 @@ if [ -z "${1}" ]; then
 	exit 1
 fi
 
+bumpversion "${1}" || exit
+
 rm -rf jsonrouter.egg-info dist build
 
 python3 setup.py sdist bdist_wheel
 twine upload dist/*
-
-bumpversion "${1}"
 
 git push
 git push --tags
