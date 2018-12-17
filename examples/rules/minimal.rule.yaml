@@ -1,0 +1,7 @@
+rules:
+- name: minimal-rule
+  routers: 
+  - name: minimal-router
+  vars:
+  - name: title
+    jsonpath: $.title

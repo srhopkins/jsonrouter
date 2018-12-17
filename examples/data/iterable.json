@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Testing Iterable 1",
+    "field": "other"
+  },
+  {
+    "title": "Testing Iterable 2",
+    "field": "other"
+  },
+  {
+    "not-title": "Testing Iterable 3",
+    "field": "other"
+  }
+]
