@@ -21,8 +21,8 @@ rules: # required
     jsonpath: $..Type # required, except for constants: see bellow 
     includes: ['.*'] # optional, default `['.*']` includes all
     excludes: [] # option, dault `[]` excludes nothing
-  # `message` is optional
-  message: | 
+  # `template` is optional
+  template: | 
     This {type} just came in
 ```
 
@@ -53,7 +53,7 @@ rules:
     includes: ['.*']
     # exclude empty
     excludes: ['^$']
-  message: |
+  template: |
     This {type} just came in
 ```
 
@@ -81,7 +81,7 @@ rules:
     jsonpath: $..account
     includes: ['.*']
     excludes: ['^$']    
-  message: |
+  template: |
     Yo! {user} just signed in to {account}.
 ```
 
@@ -111,7 +111,7 @@ rules:
     jsonpath: $..account
     includes: ['.*']
     excludes: ['^$']    
-  message: |
+  template: |
     Yo! {user} just signed in to {account}. This {stuff} was before the user.
 ```
 
@@ -128,7 +128,7 @@ rules:
     includes: ['.*']
     # exclude empty
     excludes: ['^$']
-  message: |
+  template: |
     This {type} just came in
 ```
 
@@ -140,7 +140,7 @@ import json
 import yaml
 
 
-from jsonrouter import JsonMatchEngine, jsonify_message
+from jsonrouter import JsonMatchEngine, jsonify_string
 from routers.slack import Slack
 
 
@@ -156,7 +156,7 @@ eng = JsonMatchEngine(configs, registered_routers)
 
 def handler(event, context):
     # Main lambda handler function
-    eng.route_matches(jsonify_message(event))
+    eng.route_matches(jsonify_string(event))
 ```
 
 
