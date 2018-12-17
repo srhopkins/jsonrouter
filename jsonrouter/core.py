@@ -187,7 +187,7 @@ class Variable(VariableProperties):
                     # re.error should be compile error; indicates bad regex
                     raise
             else:
-                self.includes = ['.*']
+                self.includes = [re.compile('.*')]
 
             # Check for excludes field then compile as regex to
             # confirm proper regex format. Defaults to no excludes `[]`
@@ -235,23 +235,37 @@ class JsonMatchEngine(object):
         self.rules = [Rule(rule) for rule in configs['rules']]
         self.registered_routers = registered_routers
 
-    def match_rules(self, records):
+    def match_rules(self, record):
+        # Takes single record and attempts to match against all rules
+        # if its a string try to decode as json string
+        if isinstance(record, str):
+            try:
+                record = json.loads(record)
+            except JSONDecodeError:
+                raise
+
         r = []
         for rule in self.rules:
-            for rec in records['Records']:
-                vrs = rule.get_matches(rec)
-                if vrs:
-                    r.append({
-                        'name': rule.name,
-                        'routers': rule.routers,
-                        'vars': vrs,
-                        'template': rule.template,
-                        'record': rec
-                    })
+            vrs = rule.get_matches(record)
+            if vrs:
+                r.append({
+                    'name': rule.name,
+                    'routers': rule.routers,
+                    'vars': vrs,
+                    'template': rule.template,
+                    'record': record
+                })
         return r
 
     def route_matches(self, records):
-        matched_rules = self.match_rules(records)
+        matched_rules = []
+        if isinstance(records, (list, tuple)):
+            for record in records:
+                matched_rules += self.match_rules(record)
+        else:
+            # Singleton record so make into list for router loop below
+            matched_rules += self.match_rules(records)
+
         if matched_rules:
             for matched_rule in matched_rules:
                 for r in matched_rule.get('routers'):
@@ -264,6 +278,8 @@ class JsonMatchEngine(object):
                         # Will error with name not registered or None if name field not supplied
                         raise KeyError(
                             "'{name}' is not a registered router".format(name=rname))
+
+        return matched_rules
 
 
 def validate_keys(accept_keys, keys):
