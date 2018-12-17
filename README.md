@@ -1,5 +1,5 @@
 
-# JSON Events Router
+# JSON Events Router [![Build Status](https://travis-ci.org/srhopkins/jsonrouter.svg?branch=master)](https://travis-ci.org/srhopkins/jsonrouter)
 
 Uses simple `yaml` based rules to take action on `JSON` events. Uses [jsonpath](https://readthedocs.org/projects/jsonpath-rw/) to scan the event message and `regex` for `includes` and `excludes` conditionals.
 
