@@ -1,0 +1,44 @@
+rules:
+- name: validate-vars
+  routers:
+  - name: router1
+  vars:
+  - name: constant
+    value: constant-value
+  - name: minimal-var
+    jsonpath: $..something
+  - name: empty-excludes-includes
+    jsonpath: $..something
+    includes:
+    excludes:
+  - name: empty-excludes-includes-with-spaces
+    jsonpath: $..something
+    includes: 
+    excludes: 
+  - name: empty-excludes
+    jsonpath: $..something
+    includes: ['.*']
+    excludes:
+  - name: omit-excludes
+    jsonpath: $..something
+    includes: ['.*']
+  - name: include-all-exclude-empty
+    jsonpath: $..something
+    includes:
+    - '.*'
+    excludes:
+    - '^$'
+  - name: missing-required
+  template: |
+    This is {constant}
+- name: omit-template
+  routers:
+  - name: router2
+  vars:
+  - name: constant
+    value: constant-value
+- name: missing-routers
+  vars:
+  - name: constant
+    value: constant-value
+      
