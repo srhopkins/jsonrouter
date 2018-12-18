@@ -17,7 +17,7 @@ DESCRIPTION = 'JSON based events router, inspired from an AWS Lambda project.'
 URL = 'https://github.com/srhopkins/jsonrouter'
 EMAIL = 'steve@hopkins.rocks'
 AUTHOR = 'Steven Hopkins'
-REQUIRES_PYTHON = '>=3.6.0'
+REQUIRES_PYTHON = '>=3.5.0'
 VERSION = None
 
 # What packages are required for this module to be executed?
