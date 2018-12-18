@@ -1,2 +1,2 @@
-jsonpath_rw
-pyyaml
+jsonpath_rw>=1.4.0
+pyyaml>=17.12.1
