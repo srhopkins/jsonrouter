@@ -283,14 +283,15 @@ class JsonMatchEngine(object):
 
 
 def validate_keys(accept_keys, keys):
-    # Checks to make sure all keys are present and nothing extra
+    # Checks to make sure all keys are present
     accept_keys = set(accept_keys)
     keys = set(keys)
 
     missing = accept_keys.difference(keys)
+    # TODO: use extra for logging.info
     extra = keys.difference(accept_keys)
 
-    if missing or extra:
+    if missing:
         raise KeyError('Missing fields: {missing}. Extra fields: {extra}'.format(
             missing=missing, extra=extra))
     else:
