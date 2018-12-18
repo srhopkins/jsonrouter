@@ -228,6 +228,8 @@ class Variable(VariableProperties):
             m = include.match(match)
             if m:
                 return get_groups(self.name, m)
+            else:
+                return False
 
 
 class JsonMatchEngine(object):
