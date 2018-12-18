@@ -41,4 +41,15 @@ rules:
   vars:
   - name: constant
     value: constant-value
-      
+- name: match-includes
+  routers: 
+  - name: print-router
+  vars:
+  - name: title
+    jsonpath: $.title
+  - name: created_at
+    jsonpath: $.created_at
+  - name: urgency
+    jsonpath: $.urgency
+    includes:
+    - high

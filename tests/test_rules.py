@@ -2,18 +2,19 @@ import pytest
 import yaml
 import json
 
-from jsonrouter import Rule, Variable
+from jsonrouter import JsonMatchEngine, Rule, Variable
+
 
 with open('examples/rules/validate.rules.yaml') as f:
   rules = yaml.load(f)
 
-# with open('examples/data/record.json') as f:
-#   records = json.load(f)
+with open('examples/data/test_rules.json') as f:
+  records = json.load(f)
 
-# def print_router(record):
-#   print(record) 
+def print_router(record):
+  print(record) 
 
-# registered_routers = { 'minimal-router': print_router }
+registered_routers = { 'print-router': print_router }
 
 
 rules = rules['rules']
@@ -74,3 +75,13 @@ def test_omit_template():
 def test_missing_routers():
   with pytest.raises(KeyError):
     rule = Rule(rules[2])
+
+
+def test_match_includes():
+  configs = {'rules': [rules[3]]}
+  eng = JsonMatchEngine(configs, registered_routers)
+  matches = eng.route_matches(records)
+
+  print(json.dumps(matches, indent=4))
+  assert len(matches) == 1
+  
