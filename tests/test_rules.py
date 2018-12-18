@@ -84,4 +84,40 @@ def test_match_includes():
 
   print(json.dumps(matches, indent=4))
   assert len(matches) == 1
-  
+
+
+configs_multiple_includes = yaml.load('''rules:
+- name: multiple-includes
+  routers: 
+  - name: print-router
+  vars:
+#  - name: title
+#    jsonpath: $.title
+  - name: created_at
+    jsonpath: $.created_at
+  - name: urgency
+    jsonpath: $.urgency
+    includes:
+    - low
+    - high
+''')
+def test_match_multiple_includes():
+    eng = JsonMatchEngine(configs_multiple_includes, registered_routers)
+    matches = eng.route_matches(records)
+
+    print(json.dumps(matches, indent=4))
+    assert len(matches) == 3
+
+
+configs_bad_router = yaml.load('''rules:
+- name: bad-router-name
+  routers: 
+  - name: bogus-router
+  vars:
+  - name: created_at
+    jsonpath: $.created_at
+''')
+def test_bad_router_name():
+    with pytest.raises(KeyError):
+        eng = JsonMatchEngine(configs_bad_router, registered_routers)
+        matches = eng.route_matches(records)

@@ -94,14 +94,15 @@ class Rule(RuleProperties):
     def get_matches(self, json_data):
         m = {}
         for var in self.vars:
-            match = var.get_matches(json_data)
-            if match == False:
+            matches = var.get_matches(json_data)
+            if matches == False:
                 # Field not found or did not match criteria
                 return
 
-            if match:
+            if matches:
                 # Merge dict together for all matches
-                m = {**m, **match}
+                for match in matches:
+                    m = {**m, **match}
 
         return m
 
@@ -223,13 +224,14 @@ class Variable(VariableProperties):
         for exclude in self.excludes:
             if exclude.match(match):
                 return False
-
+        
+        matches = []
         for include in self.includes:
             m = include.match(match)
             if m:
-                return get_groups(self.name, m)
-            else:
-                return False
+                matches.append(get_groups(self.name, m))
+            
+        return matches if matches else False
 
 
 class JsonMatchEngine(object):
@@ -276,10 +278,10 @@ class JsonMatchEngine(object):
                         router = self.registered_routers.get(rname)
                         if router:
                             router(matched_rule)
-                    else:
-                        # Will error with name not registered or None if name field not supplied
-                        raise KeyError(
-                            "'{name}' is not a registered router".format(name=rname))
+                        else:
+                            # Will error with name not registered or None if name field not supplied
+                            raise KeyError(
+                                "'{name}' is not a registered router".format(name=rname))
 
         return matched_rules
 
