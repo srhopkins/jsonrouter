@@ -20,7 +20,7 @@ rules: # required
   - name: type # required
     jsonpath: $..Type # required, except for constants: see bellow 
     includes: ['.*'] # optional, default `['.*']` includes all
-    excludes: [] # option, dault `[]` excludes nothing
+    excludes: [] # optional, default `[]` excludes nothing
   # `template` is optional
   template: | 
     This {type} just came in
