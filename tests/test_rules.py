@@ -121,3 +121,19 @@ def test_bad_router_name():
     with pytest.raises(KeyError):
         eng = JsonMatchEngine(configs_bad_router, registered_routers)
         matches = eng.route_matches(records)
+
+
+configs_int_value_conversion = yaml.load('''rules:
+- name: int-value-conversion
+  routers: 
+  - name: print-router
+  vars:
+  - name: number
+    jsonpath: $.number
+''')
+def test_int_value_conversion():
+    eng = JsonMatchEngine(configs_int_value_conversion, registered_routers)
+    matches = eng.route_matches({
+      'name': 'data-with-number',
+      'number': 1
+    })

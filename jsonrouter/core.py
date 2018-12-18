@@ -216,7 +216,8 @@ class Variable(VariableProperties):
         m = get_jsonpath(self.jsonpath, json_data)
         if isinstance(m, list) and m:
             # Is it a non-empty list?? Join it
-            match = ''.join(m)
+            # If a value is int convert to str for regex comparison
+            match = ''.join((str(part) for part in m))
         else:
             # This condition means the field wasn't found
             return False
@@ -305,7 +306,7 @@ def validate_keys(accept_keys, keys):
 def get_jsonpath(path, json_data):
     r = []
     path = parse(path)
-    for match in [match.value for match in path.find(json_data)]:
+    for match in (match.value for match in path.find(json_data)):
         if match:
             r.append(match)
         else:
