@@ -40,6 +40,17 @@ def test_iterable(capsys):
   assert len(matches) == 2
 
 
+goog_json_string = '''{
+  "one": 1,
+  "two": 2,
+  "three": 3
+}
+'''
+def test_json_decode(capsys):
+  eng = JsonMatchEngine(rules_minimal, registered_routers)
+  matches = eng.route_matches(goog_json_string)
+
+
 bad_json_string = '''{
   "one": 1,
   "no": "comma"
