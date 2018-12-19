@@ -3,6 +3,8 @@
 
 Uses simple `yaml` based rules to take action on `JSON` events. Uses [jsonpath](https://readthedocs.org/projects/jsonpath-rw/) to scan the event message and `regex` for `includes` and `excludes` conditionals.
 
+> **Note!** `jsonrouter` currently converts all matching field values to `str`ings for `re`gex comparision so be aware of this when expecting `int` to be returned.
+
 ## Rule Config
 
 Anatomy of the config.
