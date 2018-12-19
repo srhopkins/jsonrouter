@@ -221,6 +221,7 @@ rules:
 
 ## Lambda Example
 
+Since `jsonrouter` started from an AWS Lambda SNS parsing project it has a `jsonify_string` method that converts the SNS message field from a sting to a nested `dict`.
 
 ```python
 import json
@@ -247,7 +248,8 @@ eng = JsonMatchEngine(configs, registered_routers)
 
 def handler(event, context):
     # Main lambda handler function
-    eng.route_matches(jsonify_string(event))
+    eng.route_matches(jsonify_string(event)['Records'])
+    
 ```
 
 ## Development
