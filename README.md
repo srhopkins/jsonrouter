@@ -202,23 +202,6 @@ rules:
     Yo! {user} just signed in to {account}. This {stuff} was before the user.
 ```
 
-```yaml
-rules:
-- name: notification
-  routers: 
-  - name: slack
-    channel: my-channel
-  vars:
-  - name: type
-    jsonpath: $..Type
-    # include anything
-    includes: ['.*']
-    # exclude empty
-    excludes: ['^$']
-  template: |
-    This {type} just came in
-```
-
 ## Lambda Example
 
 Since `jsonrouter` started from an AWS Lambda SNS parsing project it has a `jsonify_string` method that converts the SNS message field from a sting to a nested `dict`.
@@ -249,7 +232,7 @@ eng = JsonMatchEngine(configs, registered_routers)
 def handler(event, context):
     # Main lambda handler function
     eng.route_matches(jsonify_string(event)['Records'])
-    
+
 ```
 
 ## Development
