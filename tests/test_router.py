@@ -40,8 +40,13 @@ def test_iterable(capsys):
   assert len(matches) == 2
 
 
-def test_json_decode(capsys):
-  eng = JsonMatchEngine(rules_minimal, registered_routers)
-  matches = eng.route_matches(json.dumps(records_single, indent=4))
-
-  print(json.dumps(matches, indent=4))
+bad_json_string = '''{
+  "one": 1,
+  "no": "comma"
+  "three": 3
+}
+'''
+def test_JSONDecodeError(capsys):
+  with pytest.raises(JSONDecodeError):
+    eng = JsonMatchEngine(rules_minimal, registered_routers)
+    matches = eng.route_matches(bad_json_string)
