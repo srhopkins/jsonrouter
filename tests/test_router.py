@@ -2,7 +2,10 @@ import pytest
 import yaml
 import json
 
+from json.decoder import JSONDecodeError
+
 from jsonrouter import JsonMatchEngine
+
 
 with open('examples/rules/minimal.rule.yaml') as f:
   rules_minimal = yaml.load(f)
@@ -35,3 +38,10 @@ def test_iterable(capsys):
 
   assert isinstance(matches, list)
   assert len(matches) == 2
+
+
+def test_json_decode(capsys):
+  eng = JsonMatchEngine(rules_minimal, registered_routers)
+  matches = eng.route_matches(json.dumps(records_single, indent=4))
+
+  print(json.dumps(matches, indent=4))

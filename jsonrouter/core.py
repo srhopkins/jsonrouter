@@ -3,6 +3,7 @@ import yaml
 import re
 
 from copy import deepcopy
+from json.decoder import JSONDecodeError
 
 from jsonpath_rw import jsonpath, parse
 
