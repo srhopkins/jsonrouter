@@ -5,6 +5,91 @@ Uses simple `yaml` based rules to take action on `JSON` events. Uses [jsonpath](
 
 > **Note!** `jsonrouter` currently converts all matching field values to `str`ings for `re`gex comparision so be aware of this when expecting `int` to be returned.
 
+## TL;DR
+
+```python
+import json
+import yaml
+
+from jsonrouter import JsonMatchEngine
+
+
+# load rules from file or string
+configs = yaml.load('''
+rules:
+- name: example-rule
+  routers: 
+  - name: print-router
+  vars:
+  - name: the-name
+    jsonpath: $.name
+''')
+
+# an example json record
+json_string = '''
+{
+    "name": "jsonrouter",
+    "type": "jsonpath matcher and router",
+    "why": {
+        "because": "it's easy"
+    }
+}
+'''
+
+
+def print_router(data):
+    # a trivial example router function
+    print(json.dumps(data, indent=4))
+    
+
+# explicitly declare your registered routers for security
+registered_routers = {
+    'print-router': print_router
+}
+
+eng = JsonMatchEngine(configs, registered_routers)
+```
+
+Use the engine to find matches:
+
+```
+In [2]: matches = eng.route_matches(json_string)
+{
+    "name": "example-rule",
+    "routers": [
+        {
+            "name": "print-router"
+        }
+    ],
+    "vars": {
+        "the-name": "jsonrouter"
+    },
+    "template": "",
+    "record": {
+        "name": "jsonrouter",
+        "type": "jsonpath matcher and router",
+        "why": {
+            "because": "it's easy"
+        }
+    }
+}
+```
+
+The contents of `matches`:
+
+```
+In [3]: matches
+Out[3]:
+[{'name': 'example-rule',
+  'routers': [{'name': 'print-router'}],
+  'vars': {'the-name': 'jsonrouter'},
+  'template': '',
+  'record': {'name': 'jsonrouter',
+   'type': 'jsonpath matcher and router',
+   'why': {'because': "it's easy"}}}]
+
+```
+
 ## Rule Config
 
 Anatomy of the config.
@@ -143,14 +228,18 @@ import yaml
 
 
 from jsonrouter import JsonMatchEngine, jsonify_string
-from routers.slack import Slack
 
 
-with open('examples/rules/rules.yaml', 'r') as f:
+def slack(webhook):
+    # whatever logic you want in here
+    pass
+
+
+with open('rules.yaml', 'r') as f:
     configs = yaml.safe_load(f)
 
 registered_routers = {
-    'slack': Slack(webhook='1234567890').handler
+    'slack': slack
 }
 
 eng = JsonMatchEngine(configs, registered_routers)
@@ -159,22 +248,6 @@ eng = JsonMatchEngine(configs, registered_routers)
 def handler(event, context):
     # Main lambda handler function
     eng.route_matches(jsonify_string(event))
-```
-
-
-```python
-# Load configs and some sample json
-
-with open('examples/rules/rules.yaml', 'r') as f:
-    configs = yaml.safe_load(f)
-    
-with open('examples/data/sample.json', 'r') as f:
-    sample = json.load(f)
-```
-
-
-```python
-handler(sample, _)
 ```
 
 ## Development
