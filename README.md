@@ -5,6 +5,12 @@ Uses simple `yaml` based rules to take action on `JSON` events. Uses [jsonpath](
 
 > **Note!** `jsonrouter` currently converts all matching field values to `str`ings for `re`gex comparision so be aware of this when expecting `int` to be returned.
 
+## Install
+
+```
+pip install jsonrouter
+```
+
 ## TL;DR
 
 ```python
